@@ -49,3 +49,95 @@ TinyDB is a lightweight document-oriented database written in Python. It stores 
 3. Launch a new Ubuntu instance.
 4. Configure security groups and allow HTTP and SSH access.
 5. Connect to the EC2 instance using SSH.
+ 
+ ### Screenshot of EC2 Instance
+
+<img width="1908" height="830" alt="image" src="https://github.com/user-attachments/assets/4724e529-d24e-480e-b2a8-888fa426e996" />
+
+
+---
+
+## Step 2: Create Python Virtual Environment
+
+Run the following commands:
+
+```bash
+sudo apt update
+sudo apt install python3-pip python3-venv -y
+
+python3 -m venv myenv
+source myenv/bin/activate
+```
+
+## Step 3: Install Required Packages
+
+```bash
+pip install fastapi uvicorn tinydb
+```
+
+---
+
+## Step 4: Create FastAPI Application
+
+Create a file named `main.py`.
+
+```python
+from fastapi import FastAPI
+from tinydb import TinyDB
+from datetime import datetime
+
+app = FastAPI()
+
+db = TinyDB('iot_data.json')
+
+@app.get("/")
+def home():
+    return {"message": "IoT REST API Running"}
+
+@app.post("/data")
+def store_data(temperature: float, humidity: float):
+    data = {
+        "temperature": temperature,
+        "humidity": humidity,
+        "timestamp": str(datetime.now())
+    }
+
+    db.insert(data)
+
+    return {
+        "message": "Data stored successfully",
+        "data": data
+    }
+
+@app.get("/data")
+def get_data():
+    return db.all()
+```
+
+---
+
+## Step 5: Run the FastAPI Server
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 80
+```
+
+---
+
+# Output
+
+- AWS EC2 instance was successfully launched.
+- FastAPI application was deployed on the cloud server.
+- Temperature and humidity data were stored using TinyDB.
+- GET and POST endpoints worked successfully.
+- API was tested through browser and Swagger UI.
+  
+    **The screenshot of output:**
+   <img width="1030" height="282" alt="image" src="https://github.com/user-attachments/assets/5a0ced34-d132-4114-9e15-70f00aa3230a" />
+
+
+---
+
+# Conclusion
+
+In this lab, a REST API was successfully developed and deployed on an AWS EC2 cloud server using FastAPI. TinyDB was used to store IoT sensor data such as temperature and humidity along with timestamps. The API endpoints were tested successfully using GET and POST methods. This experiment demonstrated the practical implementation of cloud computing and REST API concepts in IoT systems.
