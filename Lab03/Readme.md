@@ -135,3 +135,162 @@ def add_weather(temperature: float, humidity: float):
 def get_weather():
     return db.all()
 ```
+### Step 9: Frontend Code (Dashboard UI)
+
+Create folder and file:
+
+```bash
+mkdir static
+nano static/index.html
+```
+
+`static/index.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IoT Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #2a5298;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            width: 40%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .value {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        canvas {
+            margin: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    IoT Sensor Monitoring Dashboard
+</header>
+
+<div class="container">
+    <div class="card">
+        <h3>Temperature</h3>
+        <div id="temp" class="value">-- °C</div>
+    </div>
+
+    <div class="card">
+        <h3>Humidity</h3>
+        <div id="hum" class="value">-- %</div>
+    </div>
+</div>
+
+<canvas id="chart"></canvas>
+
+<script>
+let chart;
+
+async function loadData() {
+    const res = await fetch("/weather");
+    const data = await res.json();
+
+    if (!data.length) return;
+
+    const latest = data[data.length - 1];
+
+    document.getElementById("temp").innerText = latest.temperature + " °C";
+    document.getElementById("hum").innerText = latest.humidity + " %";
+
+    const labels = data.map(d => d.timestamp);
+    const temps = data.map(d => d.temperature);
+
+    if (chart) chart.destroy();
+
+    chart = new Chart(document.getElementById("chart"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Temperature",
+                data: temps,
+                borderColor: "red",
+                fill: false
+            }]
+        }
+    });
+}
+
+loadData();
+setInterval(loadData, 5000);
+</script>
+
+</body>
+</html>
+```
+
+### Step 10: Run Server
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+### Step 11: Run & Test
+
+Open the dashboard in your browser:
+
+```
+http://http://13.220.115.139/dashboard
+```
+
+
+
+---
+
+## Output
+
+- REST API successfully deployed on AWS EC2
+- Sensor data stored and retrieved using TinyDB
+- Real-time temperature and humidity values displayed on the dashboard
+- Historical data visualized using a line chart
+- Dashboard accessible publicly via EC2 public IP on port 8000
+  
+<img width="1555" height="402" alt="image" src="https://github.com/user-attachments/assets/a07c3432-3d36-432e-a74a-0100205822e2" />
+
+<img width="700" height="625" alt="image" src="https://github.com/user-attachments/assets/f93d75ac-710d-459c-9889-c2719e39eb6c" />
+
+
+---
+
+## Conclusion
+
+In this lab, an IoT dashboard system was successfully developed and deployed on AWS EC2. The system integrates FastAPI for backend services and a web-based dashboard for visualization. Sensor data is stored and retrieved using REST APIs and displayed using Chart.js line charts. This experiment demonstrates real-time and historical data visualization in IoT systems, enabling effective monitoring and analysis of temperature and humidity trends.
