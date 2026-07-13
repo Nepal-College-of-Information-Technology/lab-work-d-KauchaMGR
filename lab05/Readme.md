@@ -213,35 +213,28 @@ void loop() {
 
 ## 7. Experimental Results
 
-### 7.1 Serial Monitor Output
 
-The ESP32 successfully acquires temperature and humidity values from the DHT22 sensor.
 
-<div align="center">
- <img width="895" height="601" alt="image-of output from DHT22" src="https://github.com/user-attachments/assets/a7d126ea-269c-404f-9e86-e5c7b51db07c" />
+### 7.1  Dashboard
 
-  <br>
-  <em>Figure 2: Data Output on Serial Monitor</em>
-</div> 
-
-### 7.2 Temperature Dashboard
-
-The dashboard displays the temperature values received from the REST API.
+The dashboard displays the temperature and humidity values received from the REST API.
 
 <p align="center">
-  <img src="img/temp.png" alt="Temperature Dashboard" width="90%">
+  <img width="1372" height="655" alt="image" src="https://github.com/user-attachments/assets/73ac8fb0-e16c-48d8-a0e7-472c61706545" />
+
   <br>
   <em>Figure 3: Temperature Dashboard</em>
 </p>
 
-### 7.3 Humidity Dashboard
+### 7.2 Humidity  and temperature Dashboard
 
 The dashboard displays the humidity values stored in the cloud database.
 
 <p align="center">
-  <img src="img/humidity.png" alt="Humidity Dashboard" width="90%">
+  <img width="1088" height="1600" alt="dashboard" src="https://github.com/user-attachments/assets/71939457-6b73-412c-9401-f11002393f91" />
+
   <br>
-  <em>Figure 4: Humidity Dashboard</em>
+  <em>Figure 4: Humidity and Temperature Dashboard</em>
 </p>
 
 ## 8. Results
